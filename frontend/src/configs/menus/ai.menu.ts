@@ -1,5 +1,11 @@
 export default [
   {
+    icon: "mdi-robot-happy-outline",
+    key: "menu.voicebot",
+    text: "Voice Bot",
+    link: "/ai/voice-bot",
+  },
+  {
     icon: "mdi-robot-excited-outline",
     key: "menu.chatbot_v1",
     text: "Chatbot_V1",
@@ -11,12 +17,6 @@ export default [
     text: "Chatbot_V2",
     link: "/ai/chatbot_v2",
   },
-  // {
-  //   icon: "mdi-robot-happy-outline",
-  //   key: "menu.voicebot",
-  //   text: "Voice Bot",
-  //   link: "/ai/voice-bot",
-  // },
   // Image Bot
   // {
   //   icon: "mdi-robot-outline",

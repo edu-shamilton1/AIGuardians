@@ -58,7 +58,7 @@ const scrollToBottom = () => {
         /> -->
         <h1 class="logo-text h-full">
           <Icon class="mr-2" width="40" icon="solar:plain-bold-duotone" />
-          <span>Translator</span>
+          <span>Universal Translator</span>
         </h1>
       </v-card>
     </template>

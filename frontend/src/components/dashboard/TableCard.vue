@@ -3,15 +3,15 @@ import CopyLabel from "@/components/common/CopyLabel.vue";
 const loading = ref(true);
 
 const headers = [
-  { text: "Order Id", align: "start", value: "id" },
+  { text: "Ticket Id", align: "start", value: "id" },
   {
     text: "User",
     sortable: false,
     value: "user",
   },
   { text: "Date", value: "date" },
-  { text: "Company", value: "company" },
-  { text: "Amount", value: "amount" },
+  { text: "Issue", value: "issue" },
+  { text: "Postcode", value: "postcode" },
   { text: "Status", value: "status" },
   { text: "", sortable: false, align: "right", value: "action" },
 ];
@@ -23,10 +23,10 @@ const items = [
       email: "johnsimon@blobhill.com",
       avatar: "https://i.pravatar.cc/150?img=1",
     },
-    date: "2020-05-10",
-    company: "BlobHill",
-    amount: 52877,
-    status: "PAID",
+    date: "2024-05-10",
+    issue: "How does AI work?",
+    postcode: 2000,
+    status: "RESOLVED",
   },
   {
     id: "2838",
@@ -35,9 +35,9 @@ const items = [
       email: "cool@caprimooner.com",
       avatar: "https://i.pravatar.cc/150?img=2",
     },
-    date: "2020-05-11",
-    company: "Caprimooner",
-    amount: 2123,
+    date: "2024-05-11",
+    issue: "What are the benefits of AI?",
+    postcode: 2123,
     status: "PENDING",
   },
   {
@@ -47,9 +47,9 @@ const items = [
       email: "bush@catloveisstilllove.com",
       avatar: "https://i.pravatar.cc/150?img=3",
     },
-    date: "2020-05-11",
-    company: "CatLovers",
-    amount: 12313,
+    date: "2024-05-11",
+    issue: "Can AI be trusted to make important decisions?",
+    postcode: 2313,
     status: "PENDING",
   },
   {
@@ -59,10 +59,10 @@ const items = [
       email: "ben@indiecoolers.com",
       avatar: "https://i.pravatar.cc/150?img=4",
     },
-    date: "2020-05-12",
-    company: "IndieCoolers",
-    amount: 9873,
-    status: "PAID",
+    date: "2024-05-12",
+    issue: "What are the risks and challenges associated with AI?",
+    postcode: 2067,
+    status: "RESOLVED",
   },
   {
     id: "2841",
@@ -71,10 +71,10 @@ const items = [
       email: "jack@candylooove.com",
       avatar: "https://i.pravatar.cc/150?img=5",
     },
-    date: "2020-05-13",
-    company: "CandyLooove",
-    amount: 29573,
-    status: "PAID",
+    date: "2024-05-13",
+    issue: "How is AI trained?",
+    postcode: 2020,
+    status: "RESOLVED",
   },
 ];
 
@@ -127,16 +127,16 @@ onMounted(() => {
               </div>
             </td>
             <td>{{ item.date }}</td>
-            <td>{{ item.company }}</td>
-            <td>{{ item.amount }}</td>
+            <td>{{ item.issue }}</td>
+            <td>{{ item.postcode }}</td>
             <td class="font-weight-bold">
               <div v-if="item.status === 'PENDING'">
                 <v-icon size="small" color="warning">mdi-circle-medium</v-icon>
                 <span>Pending</span>
               </div>
-              <div v-if="item.status === 'PAID'">
+              <div v-if="item.status === 'RESOLVED'">
                 <v-icon size="small" color="success">mdi-circle-medium</v-icon>
-                <span>Paid</span>
+                <span>Resolved</span>
               </div>
             </td>
             <td>
