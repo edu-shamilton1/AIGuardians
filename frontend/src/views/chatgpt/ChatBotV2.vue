@@ -200,7 +200,7 @@ const inputRow = ref(1);
         max-width="1200"
         color="transparent"
       >
-        <!-- <v-btn
+        <v-btn
           class="mb-1"
           variant="elevated"
           icon
@@ -212,7 +212,7 @@ const inputRow = ref(1);
             location="top"
             text="ChatGPT Config"
           ></v-tooltip>
-        </v-btn> -->
+        </v-btn>
         <v-textarea
           class="mx-2"
           color="primary"

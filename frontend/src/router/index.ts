@@ -23,7 +23,7 @@ export const routes = [
       requiresAuth: true,
       layout: "landing",
     },
-    component: () => import("@/views/errors/NotFoundPage.vue"),
+    component: () => import("@/views/pages/DashBoard.vue"),
   },
   {
     path: "/:pathMatch(.*)*",

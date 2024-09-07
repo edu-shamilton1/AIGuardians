@@ -215,7 +215,7 @@ const inputRow = ref(1);
         elevation="0"
         class="input-panel d-flex align-end pa-1"
       >
-        <!-- <v-btn
+        <v-btn
           class="mb-1"
           variant="elevated"
           icon
@@ -227,7 +227,7 @@ const inputRow = ref(1);
             location="top"
             text="ChatGPT Config"
           ></v-tooltip>
-        </v-btn> -->
+        </v-btn>
         <transition name="fade">
           <v-textarea
             class="mx-2"
