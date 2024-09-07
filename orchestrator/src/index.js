@@ -14,6 +14,12 @@ const app = express();
 
 app.use('/', express.static(path.join(__dirname, 'public')));
 
+var userRoutes = require('./routes/user');
+var llmRoutes = require('./routes/llm');
+
+app.use('/user', userRoutes);
+app.use('/llm', llmRoutes);
+
 // defining an array to work as the database (temporary solution)
 const ads = [
   {title: 'Hello, world (again)!'}

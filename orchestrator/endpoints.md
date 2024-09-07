@@ -1,8 +1,19 @@
 # Router Endpoints
 Calls from front-end to orchestrator
 
+## Object
+** UserProfile **
+```
+{
+  selectedLanguage: "zh-CH",
+  inclusionFeatures: {tts: false, readinglevel: null, .. },
+  userPostcode: "2179",
+  userSA2: {id: "127011505", name: "Badgerys Creek - Greendale"}
+}
+```
+
 ## User Services
-** getUserProfileList(postcode:string) **
+** /user/getUserProfileList(postcode:string) **
 returns:
 ```
 {
@@ -11,7 +22,7 @@ returns:
 }
 ```
 
-** getUserServicesList(profile:userProfile) **
+** /user/getUserServicesList(profile:userProfile) **
 returns:
 ```
 {
@@ -25,7 +36,7 @@ returns:
 
 ## LLM Backend Services
 
-** queryLLM(profile:userProfile, queryText:string) **
+** /llm/queryLLM(profile:userProfile, queryText:string) **
 returns:
 ```
 {
@@ -35,23 +46,24 @@ returns:
 }
 ```
 
-** translateText(profile:userProfile, text:string) **
+** /llm/translateText(profile:userProfile, text:string) **
 returns:
 ```
 {
 }
 ```
 
-** queryContent(profile:userProfile, task:string, text:string) **
+** /llm/queryContent(profile:userProfile, task:string, text:string) **
 returns:
 ```
 {
 }
 ```
 
-** summariseText(profile:userProfile, text:string) **
+** /llm/summariseText(profile:userProfile, text:string) **
 returns:
 ```
 {
 }
 ```
+
