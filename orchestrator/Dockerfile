@@ -6,14 +6,18 @@ WORKDIR /usr/src/app
 
 # Copy package.json and package-lock.json   
 # (if present) to the working directory
-COPY package*.json ./
+COPY orchestrator/package*.json ./
 
 # Install dependencies
 RUN npm install
 
 # Copy the rest   
 # of your application code
-COPY src/ ./src/
+COPY orchestrator/src/ ./src/
+
+# copy the Front dist to public
+#COPY ./../frontend/dist/* ./src/public/
+ADD frontend/dist/ ./src/public/
 
 # Expose port 3001
 EXPOSE 3001
