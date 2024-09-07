@@ -49,16 +49,10 @@ const scrollToBottom = () => {
           width="200"
           src="@/assets/logo_dark.svg"
           alt=""
-        />
-        <img
-          v-else="customizeTheme.darkTheme"
-          width="200"
-          src="@/assets/logo_light.svg"
-          alt=""
         /> -->
         <h1 class="logo-text h-full">
           <Icon class="mr-2" width="40" icon="solar:plain-bold-duotone" />
-          <span>Universal Translator</span>
+          <span>AI Universal Translator</span>
         </h1>
       </v-card>
     </template>

@@ -204,7 +204,7 @@ const inputRow = ref(1);
       </perfect-scrollbar>
       <div class="no-message-container" v-else>
         <h1 class="text-h4 text-md-h2 text-primary font-weight-bold">
-          Chat With Me
+          {{ $t('menu.chatbot_v1_description') }}
         </h1>
         <AnimationChat :size="300" />
       </div>
