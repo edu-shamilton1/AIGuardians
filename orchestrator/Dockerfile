@@ -17,7 +17,7 @@ COPY orchestrator/src/ ./src/
 
 # copy the Front dist to public
 #COPY ./../frontend/dist/* ./src/public/
-ADD frontend/dist/ ./src/public/
+COPY frontend/dist/ ./src/public/
 
 # Expose port 3001
 EXPOSE 3001

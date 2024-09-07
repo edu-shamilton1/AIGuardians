@@ -1,0 +1,22 @@
+version: "3.8"
+
+services:
+  orchestrator:
+    build:
+      context: .
+      dockerfile: orchestrator/Dockerfile
+    image: govhack-orchestrator
+    ports:
+      - "3001:3001"
+    depends_on:
+      - llm
+
+  llm:
+    build: ./llm/my-app/
+    image: govhack-langserve
+    ports:
+      - "8001:8001"
+    environment:
+      GOOGLE_API_KEY: ${GOOGLE_API_KEY} # Replace with your actual Google API key
+      OPENAI_API_KEY: ${OPENAI_API_KEY} # Replace with your actual Google API key
+

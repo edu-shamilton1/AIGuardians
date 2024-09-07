@@ -9,6 +9,7 @@ const morgan = require('morgan');
 const path = require('path');
 
 
+
 // defining the Express app
 const app = express();
 
@@ -16,9 +17,6 @@ app.use('/', express.static(path.join(__dirname, 'public')));
 
 var userRoutes = require('./routes/user');
 var llmRoutes = require('./routes/llm');
-
-app.use('/user', userRoutes);
-app.use('/llm', llmRoutes);
 
 // defining an array to work as the database (temporary solution)
 const ads = [
@@ -29,6 +27,7 @@ const ads = [
 app.use(helmet());
 
 // using bodyParser to parse JSON bodies into JS objects
+app.use(bodyParser.urlencoded({ extended: true }));
 app.use(bodyParser.json());
 
 // enabling CORS for all requests
@@ -36,6 +35,10 @@ app.use(cors());
 
 // adding morgan to log HTTP requests
 app.use(morgan('combined'));
+
+// set routes
+app.use('/user', userRoutes);
+app.use('/llm', llmRoutes);
 
 // defining an endpoint to return all ads
 app.get('/status', (req, res) => {
