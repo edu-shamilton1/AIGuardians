@@ -20,6 +20,16 @@ export default [
       title: "ChatBotV2",
     },
   },
+  {
+    path: "/ai/chatbot_v3",
+    component: () => import("@/views/chatgpt/ChatBotV3.vue"),
+    meta: {
+      requiresAuth: true,
+      layout: "landing",
+      category: "AI",
+      title: "ChatBotV3",
+    },
+  },
   // vioce bot
   {
     path: "/ai/voice-bot",
