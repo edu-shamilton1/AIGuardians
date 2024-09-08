@@ -24,11 +24,19 @@ const setLocale = (locale: string) => {
 <template>
   <v-menu>
     <template v-slot:activator="{ props }">
-      <v-btn icon v-bind="props">
-        <v-icon color="primary">mdi-account-settings</v-icon>
+      <v-btn 
+      icon v-bind="props"
+      v-for="locale in availableLocales"
+      :key="locale.code"
+      @click="setLocale(locale.code)"
+      :active="locale.code === current"
+      >
+        <v-icon v-if="locale.label === 'Blind'" color="primary">mdi-human-white-cane</v-icon>
+        <v-icon v-else-if="locale.label === 'Yr-5'" color="primary">mdi-teddy-bear</v-icon>
+        <Icon v-else :icon="`twemoji:flag-${locale.name}`" class="mr-2" />
       </v-btn>
     </template>
-    <v-list nav>
+    <!-- <v-list nav>
       <v-list-item
         v-for="locale in availableLocales"
         :key="locale.code"
@@ -41,6 +49,6 @@ const setLocale = (locale: string) => {
         </template>
         <v-list-item-title> {{ locale.label }}</v-list-item-title>
       </v-list-item>
-    </v-list>
+    </v-list> -->
   </v-menu>
 </template>
