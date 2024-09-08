@@ -62,9 +62,12 @@ returns:
 ```
 {
   "status": 200,
+  "language": "chinese",
   "response": "Response in new different language"
 }
 ```
+curl -d "@b.json" -H 'Content-type: application/json' "http://localhost:3001/llm/translateText"
+
 
 ** /llm/queryContent(profile:userProfile, task:string, text:string) **
 returns:
