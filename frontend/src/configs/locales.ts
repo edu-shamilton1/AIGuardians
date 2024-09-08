@@ -23,8 +23,8 @@ export default {
   availableLocales: [
     {
       code: "en",
-      flag: "us",
-      name: "united-states",
+      flag: "au",
+      name: "australia",
       label: "English",
       messages: enMessages,
     },

@@ -231,7 +231,7 @@ const clearMessages = () => {
       <!-- No Message Content -->
       <div class="no-message-container" v-else>
         <h1 class="text-h3 text-md-h2 font-weight-bold text-primary">
-          Talk With Me
+          {{ $t('menu.voicebot_description') }}
         </h1>
 
         <AnimationAi :size="300" />
