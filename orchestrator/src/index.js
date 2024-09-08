@@ -8,6 +8,7 @@ const helmet = require('helmet');
 const morgan = require('morgan');
 const path = require('path');
 
+var telementyData = [];
 
 
 // defining the Express app
@@ -15,8 +16,8 @@ const app = express();
 
 app.use('/', express.static(path.join(__dirname, 'public')));
 
-var userRoutes = require('./routes/user');
-var llmRoutes = require('./routes/llm');
+var userRoutes = require('./routes/user')(telementyData);
+var llmRoutes = require('./routes/llm')(telementyData);
 
 // defining an array to work as the database (temporary solution)
 const ads = [
@@ -39,6 +40,10 @@ app.use(morgan('combined'));
 // set routes
 app.use('/user', userRoutes);
 app.use('/llm', llmRoutes);
+
+app.get('/getTelementryData', (req, res) => {
+  res.json(telementyData);
+});
 
 // defining an endpoint to return all ads
 app.get('/status', (req, res) => {
