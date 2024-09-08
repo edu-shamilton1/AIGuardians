@@ -13,7 +13,7 @@ from langchain_openai import ChatOpenAI
 from langchain_google_genai import ChatGoogleGenerativeAI
 
 ##from rag_chroma_private import chain as rag_chroma_private_chain
-from citizenship_rag import chain as citizenship_rag_chain
+#from citizenship_rag import chain as citizenship_rag_chain
 
 
 
@@ -57,6 +57,14 @@ summaryPrompt = PromptTemplate(
         input_variables=["fullText"]
     )
 
+translatePrompt = PromptTemplate(
+    template='''
+    Translate the following text to {language}
+    \n\n {fullText}''',
+
+    input_variables=["language","fullText"]
+)
+
 queryPrompt = PromptTemplate(
         template='''
         {fullText}
@@ -77,7 +85,15 @@ add_routes(
     path="/queryLLM"
 )
 
-add_routes(app, citizenship_rag_chain, path="/queryLLM")
+add_routes(
+    app,
+    translatePrompt | llm,
+    path="/translate"
+)
+
+
+
+#add_routes(app, citizenship_rag_chain, path="/citizenship")
 
 if __name__ == "__main__":
     import uvicorn
