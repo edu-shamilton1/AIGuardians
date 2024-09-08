@@ -67,10 +67,12 @@ module.exports = function factory(telementyData) {
     router.post('/translateText', async function(req, res, next) {
         let profile  = req.body.profile;
         let question = req.body.fullText;
-        let newLanguage = languageNames[profile.selectedLanguage];
+        let newLanguage = languageNames[profile.selectedLanguage.slice(0,2)];
 
         console.log(`[DEBUG] translate: ${question} to ${newLanguage}`);
-        console.log(`[DEBUG] with profile: ${profile}`);
+        console.log(`[DEBUG] with profile: ${JSON.stringify(profile)}`);
+
+
         const response = await fetch(`http://${llmServer}/translate/invoke`, {
             method: "POST",
             headers: {
