@@ -10,17 +10,20 @@ readme = "README.md"
 
 [tool.poetry.dependencies]
 python = ">=3.8.1,<4.0"
-langchain = "^0.1"
+langchain = ">=0.1.20"
 tiktoken = ">=0.5.1"
 langchain-chroma = "^0.1.2"
 beautifulsoup4 = ">=4.12.2"
-langchain-text-splitters = ">=0.0.1,<0.1"
+langchain-text-splitters = "^0.2.4"
+langchain-google-genai = "^1.0.10"
+langchain-openai = "^0.1.23"
+langchain_community = "^0.2.16"
 
 [tool.poetry.group.dev.dependencies]
 langchain-cli = ">=0.0.21"
 
 [tool.langserve]
-export_module = "citizenship-rag"
+export_module = "citizenship_rag"
 export_attr = "chain"
 
 [tool.templates-hub]

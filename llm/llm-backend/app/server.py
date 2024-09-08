@@ -13,6 +13,7 @@ from langchain_openai import ChatOpenAI
 from langchain_google_genai import ChatGoogleGenerativeAI
 
 ##from rag_chroma_private import chain as rag_chroma_private_chain
+from citizenship_rag import chain as citizenship_rag_chain
 
 
 
@@ -24,21 +25,9 @@ async def redirect_root_to_docs():
     return RedirectResponse("/docs")
 
 
-# Edit this to add the chain you want to add
+
 ##add_routes(app, rag_chroma_private_chain, path="/queryLLM")
 
-#llm = Ollama(model='llama3', temperature=0.1)
-#llm = ChatOpenAI(
-#    model="gpt-4o-mini",
-#    temperature=0,
-#    max_tokens=None,
-#    timeout=None,
-#    max_retries=2,
-#    api_key="",  # if you prefer to pass api key in directly instaed of using env vars
-    # base_url="...",
-    # organization="...",
-    # other params...
-#)
 
 GoogleKey = os.environ['GOOGLE_API_KEY']
 OpenAIKey = os.environ['OPENAI_API_KEY']
@@ -87,6 +76,8 @@ add_routes(
     queryPrompt | llm,
     path="/queryLLM"
 )
+
+add_routes(app, citizenship_rag_chain, path="/queryLLM")
 
 if __name__ == "__main__":
     import uvicorn

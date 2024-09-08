@@ -11,6 +11,13 @@ Calls from front-end to orchestrator
   userSA2: {id: "127011505", name: "Badgerys Creek - Greendale"}
 }
 ```
+## Dashboard Services
+** /getTelementryData **
+returns:
+```
+
+```
+curl "http://localhost:3001/getTelementryData"
 
 ## User Services
 ** /user/getUserProfileList(postcode:string) **
@@ -44,16 +51,18 @@ returns:
 ```
 {
  status: 200,
- query: "How many demons are there in demonstrate",
  response: "The word 'demonstrate' contains the word 'demon' at the beginning"
 }
 ```
+curl -d "@b.json" -H 'Content-type: application/json' "http://localhost:3001/llm/queryLLM
 
 
 ** /llm/translateText(profile:userProfile, text:string) **
 returns:
 ```
 {
+  "status": 200,
+  "response": "Response in new different language"
 }
 ```
 
@@ -68,6 +77,8 @@ returns:
 returns:
 ```
 {
+  "status": 200,
+  "response": "*Markdown*\nSome Markdown text"
 }
 ```
 curl -d "@b.json" -H 'Content-type: application/json' "http://localhost:3001/llm/summariseText"
