@@ -1,26 +1,51 @@
 var express = require('express');
-var router = express.Router();
 var logger = require('morgan');
 
-
-/* GET user profile list. */
-router.get('/getUserProfileList', function(req, res, next) {
-  let postCode = req.query.postcode;
-  console.log(`[DEBUG] lookup postcode: ${postCode}`);
-  var retProfile = {languageGroups: ["en-AU","ar","zh","pa"], SA2Block: {id: "115011558", name: "Cherrybrook"}};
-
-  res.json(retProfile);
-});
+var fs = require('fs'); 
 
 
-/* GET user services list */
-router.get('/getUserServicesList', function(req,res,next) {
-  let profile = req.body.profile;
-  console.log(`[DEBUG] use profile: ${profile}`);
-  var retList = {services: [{serviceName: "Citizenship pathways", description: "Ask questions about pathsways to citizenship"},{serviceName: "Potholes", description: "Register a pothole near you"}, {serviceName: "Plain Speech", description: "Review a document into plain speech following Australian Style Manual"}]};
+var csvData=[];
+//var parser = parse({delimiter: ','});
+/*
+fs.createReadStream("Postcode SA2 mapping.csv")
+    .pipe(parse({delimiter: ','}))
+    .on('data', function(csvrow) {
+        console.log(csvrow);
+        //do something with csvrow
+        csvData.push(csvrow);        
+    })
+    .on('end',function() {
+      //do something with csvData
+      console.log(csvData);
+    });
+*/
 
-  res.json(retList);
-});
+module.exports = function factory(telementyData) {
+  const router = require('express').Router();
+
+  /* GET user profile list. */
+  router.get('/getUserProfileList', function(req, res, next) {
+    let postCode = req.query.postcode;
+    console.log(`[DEBUG] lookup postcode: ${postCode}`);
+    var retProfile = {languageGroups: ["en-AU","ar","zh","pa"], SA2Block: {id: "115011558", name: "Cherrybrook"}};
+
+    telementyData.push({timestamp: Date(), userProfile: {}, task: "postcode"});
+    res.json(retProfile);
+  });
 
 
-module.exports = router;
+  /* GET user services list */
+  router.post('/getUserServicesList', function(req,res,next) {
+    let profile = req.body.profile;
+    console.log(`[DEBUG] use profile: ${profile}`);
+    var retList = {services: [{serviceName: "Citizenship pathways", description: "Ask questions about pathsways to citizenship"},{serviceName: "Potholes", description: "Register a pothole near you"}, {serviceName: "Plain Speech", description: "Review a document into plain speech following Australian Style Manual"}]};
+
+    telementyData.push({timestamp: Date(), userProfile: {}, task: "services"});
+    res.json(retList);
+  });
+
+  return router;
+}
+
+
+//module.exports = router;

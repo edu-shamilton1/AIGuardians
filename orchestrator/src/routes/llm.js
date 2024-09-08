@@ -1,31 +1,68 @@
 var express = require('express');
-var router = express.Router();
 var logger = require('morgan');
 
 
+module.exports = function factory(telementyData) {
+    const router = require('express').Router();
+    const llmServer = "llm:8080";
 
-/* POST simple text summary test. */
-router.post('/queryLLM', async function(req, res, next) {
-    let question = req.body.queryText;
-    
-    //console.log(`[DEBUG] query question: ${question}`);
-    const response = await fetch("http://llm:8080/summary/invoke", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({
-            "input" :
-                {
-                    "method": question
+    /* POST simple text summary test. */
+    router.post('/queryLLM', async function(req, res, next) {
+        let profile  = req.body.profile;
+        let question = req.body.fullText;
+
+        console.log(`[DEBUG] summarise: ${question}`);
+        console.log(`[DEBUG] with profile: ${profile}`);
+        
+        const response = await fetch(`http://${llmServer}/queryLLM/invoke`, {
+            method: "POST",
+            headers: {
+            "Content-Type": "application/json",
+            },
+            body: JSON.stringify({
+                "input" :
+                    {
+                        "fullText": question
+                    }
                 }
-            }
-        ),
+            ),
+        });
+        let retResponse = await response.json();
+        telementyData.push({timestamp: Date(), userProfile: profile, task: "queryLLM"})
+        console.log(retResponse);
+        res.json(retResponse.output.content);
     });
-    let retResponse = await response.json();
-    //console.log(retResponse);
-    res.json(retResponse.output.content);
-  });
+
+    /* POST simple text summary test. */
+    router.post('/summariseText', async function(req, res, next) {
+        let profile  = req.body.profile;
+        let question = req.body.fullText;
+
+        console.log(`[DEBUG] summarise: ${question}`);
+        console.log(`[DEBUG] with profile: ${profile}`);
+        
+        const response = await fetch(`http://${llmServer}/summarise/invoke`, {
+            method: "POST",
+            headers: {
+            "Content-Type": "application/json",
+            },
+            body: JSON.stringify({
+                "input" :
+                    {
+                        "fullText": question
+                    }
+                }
+            ),
+        });
+        let retResponse = await response.json();
+
+        telementyData.push({timestamp: Date(), userProfile: profile, task: "summariseText"})
+        console.log(retResponse);
+        res.json(retResponse.output.content);
+    });
+
+    return router;
+};
   
 
-module.exports = router;
+

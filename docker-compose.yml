@@ -12,7 +12,7 @@ services:
       - llm
 
   llm:
-    build: ./llm/my-app/
+    build: ./llm/llm-backend/
     image: govhack-langserve
     ports:
       - "8001:8001"
