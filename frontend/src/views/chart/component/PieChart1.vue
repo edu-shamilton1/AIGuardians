@@ -11,11 +11,10 @@ import { useChart, RenderType, ThemeType } from "@/plugins/echarts";
 import { useTheme } from "vuetify";
 const { current } = useTheme();
 const dataSet = ref([
-  { value: 335, name: "Direct" },
-  { value: 310, name: "Email" },
-  { value: 274, name: "Union Ads" },
-  { value: 235, name: "Video Ads" },
-  { value: 400, name: "Search Engine" },
+  { value: 335, name: "Summariser" },
+  { value: 310, name: "Text to Speech" },
+  { value: 274, name: "Language Translator" },
+  { value: 235, name: "Reading Level Translator" },
 ]);
 
 const option = computed<EChartsOption>(() => ({
@@ -40,7 +39,7 @@ const option = computed<EChartsOption>(() => ({
       radius: "75%",
       center: ["50%", "50%"],
       data: dataSet.value,
-      roseType: "radius",
+      // roseType: "radius",
       label: {
         color: "rgba(255, 255, 255, 0.3)",
       },

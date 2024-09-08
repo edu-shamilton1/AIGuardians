@@ -1,8 +1,10 @@
 import enMessages from "@/locales/en";
 import zhHansMessages from "@/locales/zhHans";
+import paMessages from "@/locales/pa";
 import jaMessages from "@/locales/ja";
 
-const supported = ["en", "zhHans", "ja"];
+
+const supported = ["en", "zhHans", "ja", "pa"];
 let locale = "en";
 
 try {
@@ -22,6 +24,20 @@ export default {
   // availabled locales for user selection
   availableLocales: [
     {
+      code: "blind",
+      flag: "au",
+      name: "australia",
+      label: "Blind",
+      messages: enMessages,
+    },
+    {
+      code: "yr-5",
+      flag: "au",
+      name: "australia",
+      label: "Yr-5",
+      messages: enMessages,
+    },
+    {
       code: "en",
       flag: "au",
       name: "australia",
@@ -36,6 +52,13 @@ export default {
       messages: zhHansMessages,
     },
     {
+      code: "pa",
+      flag: "pa",
+      name: "india",
+      label: "Pubjubi",
+      messages: paMessages,
+    },
+    {
       code: "ja",
       flag: "jp",
       name: "japan",
@@ -46,6 +69,7 @@ export default {
   messages: {
     en: enMessages,
     zhHans: zhHansMessages,
+    pa: paMessages,
     ja: jaMessages,
   },
 };

@@ -21,9 +21,9 @@ import TaskCard from "@/components/dashboard/ChartCard.vue";
         </v-card>
       </v-col>
       <v-col cols="12" xl="6">
-        <!-- Task Card-->
-        <v-card class="card-shadow" height="420">
-          <task-card></task-card>
+        <!-- Traffic Card-->
+        <v-card class="card-shadow h-full" height="420">
+          <sources-card></sources-card>
         </v-card>
       </v-col>
     </v-row>
