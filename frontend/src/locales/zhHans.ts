@@ -127,6 +127,8 @@ export default {
     chatbot_v1_description: "询问如何成为澳大利亚公民",
     chatbot_v2: "报告坑洼",
     chatbot_v2_description: "向政府报告你附近的坑洼",
+    chatbot_v3: "摘要器",
+    chatbot_v3_description: "总结你的文本",
     voicebot: "语音对话助手",
     voicebot_description: "用语音和我对话",
     imagebot: "图像助手",

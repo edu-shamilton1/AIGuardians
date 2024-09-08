@@ -128,6 +128,8 @@ export default {
     chatbot_v1_description: "ਨਾਗਰਿਕਤਾ ਲਈ ਪਾਥਵੇਜ਼ ਬਾਰੇ ਸਵਾਲ ਪੁੱਛੋ",
     chatbot_v2: "ਪੋਥੋਲਸ",
     chatbot_v2_description: "ਆਪਣੇ ਨੇੜਲੇ ਪੋਥੋਲ ਨੂੰ ਰਜਿਸਟਰ ਕਰੋ",
+    chatbot_v3: "ਸੰਖੇਪਕ",
+    chatbot_v3_description: "ਆਪਣੇ ਪਾਠ ਦਾ ਸੰਖੇਪ ਕਰੋ",
     voicebot: "ਵਾਇਸਬੋਟ",
     voicebot_description: "ਮੇਰੇ ਨਾਲ ਗੱਲ ਕਰੋ",
     imagebot: "ਇਮੇਜਬੋਟ",

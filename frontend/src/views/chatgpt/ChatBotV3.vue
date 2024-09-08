@@ -92,7 +92,17 @@ const createCompletion = async () => {
             }
           }
         }),
-      });
+      }).then(function(response) {
+          // The response is a Response instance.
+          // You parse the data into a useable format using `.json()`
+          return response.json();
+        }).then(function(data) {
+          // Add the bot message
+          messages.value.push({
+            content: data?.response,
+            role: "assistant",
+          });
+        });
 
       // Handle errors
       if (!completion.ok) {
@@ -102,20 +112,7 @@ const createCompletion = async () => {
         return;
       }
 
-      // Create a reader
-      const reader = completion.body?.getReader();
-      if (!reader) {
-        snackbarStore.showErrorMessage("Cannot read the stream.");
-      }
-
-      // Add the bot message
-      messages.value.push({
-        content: "",
-        role: "assistant",
-      });
-
-      // Read the stream
-      read(reader, messages);
+      
     } catch (error) {
       snackbarStore.showErrorMessage(error.message);
     }

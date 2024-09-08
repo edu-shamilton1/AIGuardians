@@ -127,6 +127,8 @@ export default {
     chatbot_v1_description: "オーストラリアの市民になる方法を尋ねる",
     chatbot_v2: "穴ぼこの報告",
     chatbot_v2_description: "お近くの穴ぼこを政府にご報告する",
+    chatbot_v3: "要約者",
+    chatbot_v3_description: "あなたのテキストを要約してください",
     voicebot: "音声対話アシスタント",
     voicebot_description: "音声でお話しください",
     imagebot: "ImageBot",
