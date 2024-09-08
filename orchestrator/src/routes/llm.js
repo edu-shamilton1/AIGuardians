@@ -95,6 +95,41 @@ module.exports = function factory(telementyData) {
     });
 
 
+
+    //citizenship
+    /* POST simple text summary test. */
+    router.post('/queryContent', async function(req, res, next) {
+        let profile  = req.body.profile;
+        let question = req.body.question;
+
+
+        console.log(`[DEBUG] ask citizenship: ${question}`);
+        console.log(`[DEBUG] with profile: ${JSON.stringify(profile)}`);
+
+
+        const response = await fetch(`http://${llmServer}/citizenship/invoke`, {
+            method: "POST",
+            headers: {
+            "Content-Type": "application/json",
+            },
+            body: JSON.stringify({
+                "input" :
+                    {
+                        "question": question,
+                    }
+                }
+            ),
+        });
+        let retResponse = await response.json();
+
+        telementyData.push({timestamp: Date(), userProfile: profile, task: "translateText"})
+        console.log(retResponse);
+        res.json({"status": 200, "response": retResponse.output.content});
+    });
+
+
+
+
     return router;
 };
   
