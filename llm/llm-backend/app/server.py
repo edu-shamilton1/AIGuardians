@@ -34,7 +34,7 @@ async def redirect_root_to_docs():
 #    max_tokens=None,
 #    timeout=None,
 #    max_retries=2,
-#    api_key="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",  # if you prefer to pass api key in directly instaed of using env vars
+#    api_key="",  # if you prefer to pass api key in directly instaed of using env vars
     # base_url="...",
     # organization="...",
     # other params...
