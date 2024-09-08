@@ -129,6 +129,8 @@ export default {
     chatbot_v1_description: "Ask questions about pathsways to citizenship",
     chatbot_v2: "Potholes",
     chatbot_v2_description: "Register a pothole near you",
+    chatbot_v3: "Summariser",
+    chatbot_v3_description: "Summarise your text",
     voicebot: "VoiceBot",
     voicebot_description: "Talk with me",
     imagebot: "ImageBot",

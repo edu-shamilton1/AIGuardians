@@ -6,6 +6,12 @@ export default [
     link: "/ai/voice-bot",
   },
   {
+    icon: "mdi-scissors-cutting",
+    key: "menu.chatbot_v3",
+    text: "Chatbot_V3",
+    link: "/ai/chatbot_v3",
+  },
+  {
     icon: "mdi-card-account-details-outline",
     key: "menu.chatbot_v1",
     text: "Chatbot_V1",
