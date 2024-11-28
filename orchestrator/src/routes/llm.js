@@ -10,7 +10,7 @@ module.exports = function factory(telementyData) {
     /* POST simple text summary test. */
     router.post('/queryLLM', async function(req, res, next) {
         let profile  = req.body.profile;
-        let question = req.body.fullText;
+        let question = req.body.queryText;
 
         console.log(`[DEBUG] summarise: ${question}`);
         console.log(`[DEBUG] with profile: ${profile}`);
@@ -23,7 +23,7 @@ module.exports = function factory(telementyData) {
             body: JSON.stringify({
                 "input" :
                     {
-                        "fullText": question
+                        "queryText": question
                     }
                 }
             ),
