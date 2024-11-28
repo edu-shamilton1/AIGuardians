@@ -67,9 +67,9 @@ translatePrompt = PromptTemplate(
 
 queryPrompt = PromptTemplate(
         template='''
-        {fullText}
+        {queryText}
         ''',
-        input_variables=["fullText"]
+        input_variables=["queryText"]
     )
 
 
