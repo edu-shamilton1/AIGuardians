@@ -10,6 +10,7 @@ from langchain_community.embeddings import OpenAIEmbeddings
 from langchain_google_genai import GoogleGenerativeAIEmbeddings
 from langchain_core.output_parsers import StrOutputParser
 from langchain_core.prompts import ChatPromptTemplate
+from langchain.prompts import PromptTemplate
 from langchain_core.pydantic_v1 import BaseModel
 from langchain_core.runnables import RunnableParallel, RunnablePassthrough
 #from langchain_text_splitters import RecursiveCharacterTextSplitter
@@ -29,6 +30,8 @@ from langchain_core.documents import Document
 
 from langchain_openai import ChatOpenAI
 from langchain_google_genai import ChatGoogleGenerativeAI
+
+from typing import Any, Callable, Dict, List, Optional, TypedDict
 
 
 GoogleKey = os.environ['GOOGLE_API_KEY']
@@ -53,7 +56,7 @@ if (len(OpenAIKey) > 0):
     )
     embed = OpenAIEmbeddings(openai_api_key=OpenAIKey)
 
-
+from langchain.prompts import PromptTemplate
 #loader = WebBaseLoader("https://https://immi.homeaffairs.gov.au/help-support/meeting-our-requirements/character/character-requirements-for-australian-citizenship/")
 #data = loader.load()
 #
@@ -145,8 +148,13 @@ template = """Answer the question based only on the following context:
 
 Question: {question}
 """
-prompt = ChatPromptTemplate.from_template(template)
 
+#prompt = ChatPromptTemplate.from_template(template)
+prompt = ChatPromptTemplate.from_messages([("human", template)])
+
+#rag_chain = {"context": retriever, "question": RunnablePassthrough()} | prompt | llm
+#response = rag_chain.invoke("what checks do I need")
+#print(response.content)
 
 
 # RAG chain
@@ -154,13 +162,15 @@ chain = (
     RunnableParallel({"context": retriever, "question": RunnablePassthrough()})
     | prompt
     | llm
-    | StrOutputParser()
 )
 
 
 # Add typing for input
 class Question(BaseModel):
     __root__: str
+
+class Input(BaseModel):
+    Question: str
 
 
 chain = chain.with_types(input_type=Question)

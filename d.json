@@ -1,0 +1,14 @@
+{
+    "profile": {
+      "selectedLanguage": "zh-CH",
+      "inclusionFeatures": {
+        "tts": "false", 
+        "readinglevel": ""
+      },
+      "userPostcode": "2179",
+      "userSA2": {
+        "id": "127011505", "name": "Badgerys Creek - Greendale"
+      }
+    },
+    "question": "what is the minimum age"
+   }

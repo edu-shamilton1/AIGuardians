@@ -93,7 +93,7 @@ add_routes(
 )
 
 
-add_routes(app, citizenship_rag_chain, path="/citizenshipQuery")
+add_routes(app, citizenship_rag_chain, path="/citizenship")
 
 if __name__ == "__main__":
     import uvicorn

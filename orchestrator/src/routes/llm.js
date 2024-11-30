@@ -113,16 +113,13 @@ module.exports = function factory(telementyData) {
             "Content-Type": "application/json",
             },
             body: JSON.stringify({
-                "input" :
-                    {
-                        "question": question,
-                    }
+                "input" : question
                 }
             ),
         });
         let retResponse = await response.json();
 
-        telementyData.push({timestamp: Date(), userProfile: profile, task: "translateText"})
+        telementyData.push({timestamp: Date(), userProfile: profile, task: "citizenship query"})
         console.log(retResponse);
         res.json({"status": 200, "response": retResponse.output.content});
     });

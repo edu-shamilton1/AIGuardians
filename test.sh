@@ -24,6 +24,10 @@ echo -e "\n3. Query"
 curl -d "@c.json" -H 'Content-type: application/json' "http://localhost:3001/llm/queryLLM"
 echo ""
 
+echo -e "\n4. RAG query"
+curl -d "@d.json" -H "Content-type: application/json" "http://localhost:3001/llm/queryContent"
+echo ""
+
 echo -e "\nTest Telemetry data"
 curl "http://localhost:3001/getTelementryData"
 echo ""
