@@ -1,7 +1,7 @@
 <!--
 * @Component:
 * @Maintainer: J.K. Yang
-* @Description:
+* @Description: ChatBot V1 is the Citizenship pathways bot
 -->
 <script setup lang="ts">
 import { useSnackbarStore } from "@/stores/snackbarStore";
@@ -73,50 +73,101 @@ const createCompletion = async () => {
   //   snackbarStore.showErrorMessage("请先输入API KEY");
   //   return;
   // }
+  const env = await import.meta.env;
+  console.log('citizenship env', env.VITE_AI_API);
+  if (env.VITE_AI_API) {
+    try {
+      // Create a completion (axios is not used here because it does not support streaming)
+      const completion = await fetch(`${env.VITE_AI_API}/llm/queryContent`, {
+        headers: {
+          "Content-Type": "application/json",
+        },
+        method: "POST",
+        body: JSON.stringify({
+          question: requestMessages.value[requestMessages.value?.length - 1]?.content,
+          profile: {
+            selectedLanguage: "en-AU",
+            inclusionFeatures: {
+              tts: "false",
+              readinglevel: "",
+            },
+            userPostcode: "2179",
+            userSA2: {
+              id: "127011505",
+              name: "Badgerys Creek - Greendale",
+            }
+          }
+        }),
+      }).then(function(response) {
+          // The response is a Response instance.
+          // You parse the data into a useable format using `.json()`
+          return response.json();
+        }).then(function(data) {
+          // Add the bot message
+          messages.value.push({
+            content: data?.response,
+            role: "assistant",
+          });
+        });
 
-  const proxyUrl = chatGPTStore.proxyUrl
-    ? chatGPTStore.proxyUrl
-    : "https://api.openai-proxy.com";
-  try {
-    // Create a completion (axios is not used here because it does not support streaming)
-    const completion = await fetch(`${proxyUrl}/v1/chat/completions`, {
-      headers: {
-        "Content-Type": "application/json",
-        Authorization: `Bearer ${chatGPTStore.getApiKey}`,
-      },
-      method: "POST",
-      body: JSON.stringify({
-        messages: requestMessages.value,
-        model: chatGPTStore.model,
-        stream: true,
-      }),
-    });
+      // Handle errors
+      if (!completion.ok) {
+        const errorData = await completion.json();
+        snackbarStore.showErrorMessage(errorData.error.message);
 
-    // Handle errors
-    if (!completion.ok) {
-      const errorData = await completion.json();
-      snackbarStore.showErrorMessage(errorData.error.message);
+        return;
+      }
 
-      return;
+
+    } catch (error) {
+      snackbarStore.showErrorMessage(error.message);
     }
+  } else {
+    // ChatGPT path
+    const proxyUrl = chatGPTStore.proxyUrl
+      ? chatGPTStore.proxyUrl
+      : "https://api.openai-proxy.com";
+    try {
+      // Create a completion (axios is not used here because it does not support streaming)
+      const completion = await fetch(`${proxyUrl}/v1/chat/completions`, {
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${chatGPTStore.getApiKey}`,
+        },
+        method: "POST",
+        body: JSON.stringify({
+          messages: requestMessages.value,
+          model: chatGPTStore.model,
+          stream: true,
+        }),
+      });
 
-    // Create a reader
-    const reader = completion.body?.getReader();
-    if (!reader) {
-      snackbarStore.showErrorMessage("Cannot read the stream.");
+      // Handle errors
+      if (!completion.ok) {
+        const errorData = await completion.json();
+        snackbarStore.showErrorMessage(errorData.error.message);
+
+        return;
+      }
+
+      // Create a reader
+      const reader = completion.body?.getReader();
+      if (!reader) {
+        snackbarStore.showErrorMessage("Cannot read the stream.");
+      }
+
+      // Add the bot message
+      messages.value.push({
+        content: "",
+        role: "assistant",
+      });
+
+      // Read the stream
+      read(reader, messages);
+    } catch (error) {
+      snackbarStore.showErrorMessage(error.message);
     }
-
-    // Add the bot message
-    messages.value.push({
-      content: "",
-      role: "assistant",
-    });
-
-    // Read the stream
-    read(reader, messages);
-  } catch (error) {
-    snackbarStore.showErrorMessage(error.message);
-  }
+}
 };
 
 watch(

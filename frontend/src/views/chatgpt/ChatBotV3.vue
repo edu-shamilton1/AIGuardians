@@ -1,7 +1,7 @@
 <!--
 * @Component:
 * @Maintainer: J.K. Yang
-* @Description:
+* @Description: ChatBot V3 is the Summariser Bot
 -->
 <script setup lang="ts">
 import { useSnackbarStore } from "@/stores/snackbarStore";
@@ -69,10 +69,12 @@ const createCompletion = async () => {
   //   snackbarStore.showErrorMessage("请先输入API KEY");
   //   return;
   // }
-  if (import.meta.env.VITE_AI_API) {
+  const env = await import.meta.env;
+  console.log('summarise env', env.VITE_AI_API);
+  if (env.VITE_AI_API) {
     try {
       // Create a completion (axios is not used here because it does not support streaming)
-      const completion = await fetch(`${import.meta.env.VITE_AI_API}/llm/summariseText`, {
+      const completion = await fetch(`${env.VITE_AI_API}/llm/summariseText`, {
         headers: {
           "Content-Type": "application/json",
         },
@@ -87,7 +89,7 @@ const createCompletion = async () => {
             },
             userPostcode: "2179",
             userSA2: {
-              id: "127011505", 
+              id: "127011505",
               name: "Badgerys Creek - Greendale",
             }
           }
@@ -112,7 +114,7 @@ const createCompletion = async () => {
         return;
       }
 
-      
+
     } catch (error) {
       snackbarStore.showErrorMessage(error.message);
     }
