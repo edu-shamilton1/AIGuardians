@@ -14,12 +14,18 @@ from langchain_core.pydantic_v1 import BaseModel
 from langchain_core.runnables import RunnableParallel, RunnablePassthrough
 #from langchain_text_splitters import RecursiveCharacterTextSplitter
 import numpy as np
-from langchain.document_loaders import WebBaseLoader
+#from langchain.document_loaders import WebBaseLoader
+###from langchain_community.document_loaders import WebBaseLoader
 from bs4 import BeautifulSoup
 import requests
-from langchain.embeddings.openai import OpenAIEmbeddings
-from langchain.vectorstores import FAISS
+#from langchain.embeddings.openai import OpenAIEmbeddings
+from langchain_openai import OpenAIEmbeddings
+#from langchain.vectorstores import FAISS
+from langchain_community.docstore.in_memory import InMemoryDocstore
+from langchain_community.vectorstores import FAISS
 import faiss
+from uuid import uuid4
+from langchain_core.documents import Document
 
 from langchain_openai import ChatOpenAI
 from langchain_google_genai import ChatGoogleGenerativeAI
@@ -78,6 +84,10 @@ else:
 
 print(content)
 
+document = Document(content)
+documents = [document]
+uuids = [str(uuid4()) for _ in range(len(documents))]
+
 ## Add to vectorDB
 #vectorstore = Chroma.from_documents(
 #    documents=content,
@@ -87,29 +97,44 @@ print(content)
 #retriever = vectorstore.as_retriever()
 
 
-# Step 3: Embed the content
+## Step 3: Embed the content
 embedded_content = embed.embed_documents([content])
-
-# Step 4: Initialize the FAISS index for vector storage
+#
+## Step 4: Initialize the FAISS index for vector storage
 if embedded_content:
+    print("[DEBUG] adding embedded content...")
     dimension = len(embedded_content[0])  # Get the dimension of the embedding vector
     faiss_index = faiss.IndexFlatL2(dimension)  # L2 distance metric
-
-    # Add the embedded content to the FAISS index
-    # Convert embedded_content to a NumPy array
+#
+#    # Add the embedded content to the FAISS index
+#    # Convert embedded_content to a NumPy array
     embedded_content = np.array(embedded_content)
     faiss_index.add(embedded_content)
-
+#
 # Store in a FAISS wrapper for easier access
 # Create a docstore using a dictionary
-docstore = {0: content}
+##docstore = {0: content}
+##
+### Create a mapping between the index and the docstore
+##index_to_docstore_id = {0: 0}
 
-# Create a mapping between the index and the docstore
-index_to_docstore_id = {0: 0}
 
-vector_store = FAISS(embed.embed_query, faiss_index, docstore, index_to_docstore_id)
+# embed.embed_query
+##vector_store = FAISS(embed, faiss_index, docstore, index_to_docstore_id)
+vector_store = FAISS(
+    embedding_function=embed,
+    index=faiss_index,
+    docstore=InMemoryDocstore(),
+    index_to_docstore_id={0: uuids[0]},
+)
+
+vector_store.add_documents(documents=documents, ids=uuids)
 
 retriever = vector_store.as_retriever()
+print("[DEBUG] get retriever from FAISS vector store")
+docs = retriever.invoke("What is the minimum age")
+print("[DEBUG] got back {} documents".format(len(docs)))
+print("[DEBUG] doc[0]: {}".format(docs[0]))
 # Prompt
 # Optionally, pull from the Hub
 # from langchain import hub

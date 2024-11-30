@@ -13,7 +13,7 @@ from langchain_openai import ChatOpenAI
 from langchain_google_genai import ChatGoogleGenerativeAI
 
 ##from rag_chroma_private import chain as rag_chroma_private_chain
-#from citizenship_rag import chain as citizenship_rag_chain
+from citizenship_rag import chain as citizenship_rag_chain
 
 
 
@@ -36,7 +36,8 @@ llm=""
 
 if (len(GoogleKey) > 0):
     print(f"Using Google API")
-    llm = ChatGoogleGenerativeAI(model="gemini-pro", google_api_key=GoogleKey)
+    modelName = "gemini-1.5-flash"   ## "gemini-pro"
+    llm = ChatGoogleGenerativeAI(model=modelName, google_api_key=GoogleKey)
 if (len(OpenAIKey) > 0):
     print(f"Using OpenAI API")
     llm = ChatOpenAI(
@@ -92,8 +93,7 @@ add_routes(
 )
 
 
-
-#add_routes(app, citizenship_rag_chain, path="/citizenship")
+add_routes(app, citizenship_rag_chain, path="/citizenshipQuery")
 
 if __name__ == "__main__":
     import uvicorn
