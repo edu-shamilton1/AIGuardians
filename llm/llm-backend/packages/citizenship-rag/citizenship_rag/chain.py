@@ -65,31 +65,63 @@ from langchain.prompts import PromptTemplate
 #text_splitter = RecursiveCharacterTextSplitter(chunk_size=500, chunk_overlap=0)
 #all_splits = text_splitter.split_documents(data)
 
-# Step 1: Fetch content from the government site
-gov_site_url = "https://immi.homeaffairs.gov.au/help-support/meeting-our-requirements/character/character-requirements-for-australian-citizenship"
-gov_response = requests.get(gov_site_url)
-gov_soup = BeautifulSoup(gov_response.content, 'html.parser')
+documents = []
+embed_list = []
+dimmi_urls = ["https://immi.homeaffairs.gov.au/help-support/meeting-our-requirements/character/character-requirements-for-australian-citizenship",
+              "https://immi.homeaffairs.gov.au/help-support/meeting-our-requirements/health"
+]
+for gov_site_url in dimmi_urls :
+    # Step 1: Fetch content from the government site
+    #gov_site_url = 
+    gov_response = requests.get(gov_site_url)
+    gov_soup = BeautifulSoup(gov_response.content, 'html.parser')
 
-for element in gov_soup(["nav", "footer", "header", "aside"]):  # remove nav, footer, header, and aside elements
-    element.extract()
+    for element in gov_soup(["nav", "footer", "header", "aside"]):  # remove nav, footer, header, and aside elements
+        element.extract()
 
-# Extract the content from all paragraphs
-# content = "\n".join([p.get_text() for p in gov_soup.find_all("p")])
-# content = "\n".join([div.get_text() for div in gov_soup.find_all("div")])
+    # Extract the content from all paragraphs
+    # content = "\n".join([p.get_text() for p in gov_soup.find_all("p")])
+    # content = "\n".join([div.get_text() for div in gov_soup.find_all("div")])
 
-main_content = gov_soup.find(id="content-main") or gov_soup.find(class_="content-main")
+    # gov_soup.find(id="content-main") or
+    # gov_soup.find(class_="content-main")
+    main_content = gov_soup.find(class_="content-main")
 
-# If the 'content-main' section is found, extract its text
-if main_content:
-    content = "\n".join([p.get_text() for p in main_content.find_all("p")])
-else:
-    content = "Main content section not found."
+    # If the 'content-main' section is found, extract its text
+    if main_content:
+        content = "\n".join([p.get_text() for p in main_content.find_all("p")])
+    else:
+        print("[ERROR] no main content section found for url {}".format(gov_site_url))
+        content = "Main content section not found."
 
-print(content)
+    print(content)
+    ## Step 3: Embed the content
+    
+    embedded_content = embed.embed_documents([content])
 
-document = Document(content)
-documents = [document]
+    #
+    ## Step 4: Initialize the FAISS index for vector storage
+    if embedded_content:
+        print("[DEBUG] adding embedded content from {}".format(gov_site_url))
+        #dimension = len(embedded_content[0])  # Get the dimension of the embedding vector
+        #faiss_index = faiss.IndexFlatL2(dimension)  # L2 distance metric
+    #
+    #    # Add the embedded content to the FAISS index
+    #    # Convert embedded_content to a NumPy array
+        embedded_content = np.array(embedded_content)
+        embed_list.append(embedded_content)
+        #faiss_index.add(embedded_content)
+        #faiss_list.append(faiss_index)
+        document = Document(page_content=content)
+        documents.append(document)
+
+##documents = [document]
 uuids = [str(uuid4()) for _ in range(len(documents))]
+docstore_index = [{k: uuids[k]} for k in range(len(uuids))]
+
+for x in docstore_index: 
+    print("x: {}".format(x))
+
 
 ## Add to vectorDB
 #vectorstore = Chroma.from_documents(
@@ -100,19 +132,6 @@ uuids = [str(uuid4()) for _ in range(len(documents))]
 #retriever = vectorstore.as_retriever()
 
 
-## Step 3: Embed the content
-embedded_content = embed.embed_documents([content])
-#
-## Step 4: Initialize the FAISS index for vector storage
-if embedded_content:
-    print("[DEBUG] adding embedded content...")
-    dimension = len(embedded_content[0])  # Get the dimension of the embedding vector
-    faiss_index = faiss.IndexFlatL2(dimension)  # L2 distance metric
-#
-#    # Add the embedded content to the FAISS index
-#    # Convert embedded_content to a NumPy array
-    embedded_content = np.array(embedded_content)
-    faiss_index.add(embedded_content)
 #
 # Store in a FAISS wrapper for easier access
 # Create a docstore using a dictionary
@@ -120,7 +139,10 @@ if embedded_content:
 ##
 ### Create a mapping between the index and the docstore
 ##index_to_docstore_id = {0: 0}
+for x in range(len(embed_list)):
+    print("- index: {}, len: {}".format(x, len(embed_list[x][0])))
 
+faiss_index = faiss.IndexFlatL2(len(embed_list[0][0]))
 
 # embed.embed_query
 ##vector_store = FAISS(embed, faiss_index, docstore, index_to_docstore_id)
@@ -128,7 +150,7 @@ vector_store = FAISS(
     embedding_function=embed,
     index=faiss_index,
     docstore=InMemoryDocstore(),
-    index_to_docstore_id={0: uuids[0]},
+    index_to_docstore_id={},
 )
 
 vector_store.add_documents(documents=documents, ids=uuids)
