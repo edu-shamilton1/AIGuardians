@@ -15,6 +15,8 @@ from langchain_google_genai import ChatGoogleGenerativeAI
 ##from rag_chroma_private import chain as rag_chroma_private_chain
 from citizenship_rag import chain as citizenship_rag_chain
 
+# global variables
+import yaml
 
 
 app = FastAPI()
@@ -31,17 +33,22 @@ async def redirect_root_to_docs():
 
 GoogleKey = os.environ['GOOGLE_API_KEY']
 OpenAIKey = os.environ['OPENAI_API_KEY']
+config = yaml.safe_load(open("./config.yaml"))
+
 
 llm=""
 
+
 if (len(GoogleKey) > 0):
-    print(f"Using Google API")
-    modelName = "gemini-1.5-flash"   ## "gemini-pro"
+    modelName = config['GOOGLE_MODEL_NAME']
+    print("Using Google API {}".format(modelName))
+    modelName = modelName   ## "gemini-pro"
     llm = ChatGoogleGenerativeAI(model=modelName, google_api_key=GoogleKey)
 if (len(OpenAIKey) > 0):
-    print(f"Using OpenAI API")
+    modelName = config['OPENAI_MODEL_NAME']
+    print("Using OpenAI API {}".format(modelName))
     llm = ChatOpenAI(
-      model="gpt-4o-mini",
+      model=modelName,
       temperature=0,
       max_tokens=None,
       timeout=None,

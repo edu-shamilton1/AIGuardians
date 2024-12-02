@@ -33,21 +33,27 @@ from langchain_google_genai import ChatGoogleGenerativeAI
 
 from typing import Any, Callable, Dict, List, Optional, TypedDict
 
+## global config variables
+import yaml
+
 
 GoogleKey = os.environ['GOOGLE_API_KEY']
 OpenAIKey = os.environ['OPENAI_API_KEY']
+config = yaml.safe_load(open("./config.yaml"))
 
 llm=""
 embed=""
 
 if (len(GoogleKey) > 0):
-    print(f"Using Google API")
-    llm = ChatGoogleGenerativeAI(model="gemini-pro", google_api_key=GoogleKey)
+    modelName = config['GOOGLE_MODEL_NAME']
+    print("Using Google API {}".format(modelName))
+    llm = ChatGoogleGenerativeAI(model=modelName, google_api_key=GoogleKey)
     embed = GoogleGenerativeAIEmbeddings(model="models/embedding-001", google_api_key=GoogleKey)
 if (len(OpenAIKey) > 0):
-    print(f"Using OpenAI API")
+    modelName = config['OPENAI_MODEL_NAME']
+    print("Using OpenAI API {}".format(modelName))
     llm = ChatOpenAI(
-      model="gpt-4o-mini",
+      model=modelName,
       temperature=0,
       max_tokens=None,
       timeout=None,
@@ -165,14 +171,18 @@ print("[DEBUG] doc[0]: {}".format(docs[0]))
 # from langchain import hub
 # prompt = hub.pull("rlm/rag-prompt")
 # Or, define your own:
-template = """Answer the question based only on the following context:
+template = """You are a customer service agent for the Australian Department of Immigration, you can only answer questions about Applying for Australian Citizenship.
+Answer the question based only on the following context:
 {context}
+
+If there is no context, answer by saying that you can only answer questions about Australian Citizenship.
 
 Question: {question}
 """
 
 #prompt = ChatPromptTemplate.from_template(template)
 prompt = ChatPromptTemplate.from_messages([("human", template)])
+
 
 #rag_chain = {"context": retriever, "question": RunnablePassthrough()} | prompt | llm
 #response = rag_chain.invoke("what checks do I need")
